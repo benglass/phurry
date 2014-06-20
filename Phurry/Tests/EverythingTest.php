@@ -6,11 +6,14 @@ use Phurry\Phurry;
 
 class EverythingTest extends \PHPUnit_Framework_TestCase
 {
+    public function setUp()
+    {
+        $this->phurry = new Phurry;
+    }
+
     public function testCanCreateCurriedFunctionFromClosure()
     {
-        $phurry = new Phurry;
-
-        $curriedFn = $phurry->curry(function($a) {
+        $curriedFn = $this->phurry->curry(function($a) {
         });
 
         $this->assertInstanceOf('Closure', $curriedFn);
@@ -18,9 +21,7 @@ class EverythingTest extends \PHPUnit_Framework_TestCase
 
     public function testCanCurryFunctionArguments()
     {
-        $phurry = new Phurry;
-
-        $curriedFn = $phurry->curry(function($a, $b, $c) {
+        $curriedFn = $this->phurry->curry(function($a, $b, $c) {
             return $a + $b + $c;
         });
 
@@ -32,9 +33,7 @@ class EverythingTest extends \PHPUnit_Framework_TestCase
 
     public function testCanCallCurriedFunctionWithAllArguments()
     {
-        $phurry = new Phurry;
-
-        $curriedFn = $phurry->curry(function($a, $b, $c) {
+        $curriedFn = $this->phurry->curry(function($a, $b, $c) {
             return $a + $b + $c;
         });
 
@@ -43,9 +42,7 @@ class EverythingTest extends \PHPUnit_Framework_TestCase
 
     public function testCanCallCurriedFunctionWithMultipleArguments()
     {
-        $phurry = new Phurry;
-
-        $curriedFn = $phurry->curry(function($a, $b, $c) {
+        $curriedFn = $this->phurry->curry(function($a, $b, $c) {
             return $a + $b + $c;
         });
 
@@ -56,19 +53,15 @@ class EverythingTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateCurriedFunctionWithNoArgumentsThrowsInvalidArgumentException()
     {
-        $phurry = new Phurry;
-
         $this->setExpectedException('InvalidArgumentException');
 
-        $curriedFn = $phurry->curry(function() {
+        $curriedFn = $this->phurry->curry(function() {
         });
     }
 
     public function testCreateCurriedFunctionWithTooManyArgumentsThrowsInvalidArgumentException()
     {
-        $phurry = new Phurry;
-
-        $curriedFn = $phurry->curry(function($a, $b) {
+        $curriedFn = $this->phurry->curry(function($a, $b) {
         });
 
         $this->setExpectedException('InvalidArgumentException');
