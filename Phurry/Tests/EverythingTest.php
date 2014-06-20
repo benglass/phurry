@@ -30,6 +30,30 @@ class EverythingTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(10, $add7(3));
     }
 
+    public function testCanCallCurriedFunctionWithAllArguments()
+    {
+        $phurry = new Phurry;
+
+        $curriedFn = $phurry->curry(function($a, $b, $c) {
+            return $a + $b + $c;
+        });
+
+        $this->assertEquals(10, $curriedFn(3, 3, 4));
+    }
+
+    public function testCanCallCurriedFunctionWithMultipleArguments()
+    {
+        $phurry = new Phurry;
+
+        $curriedFn = $phurry->curry(function($a, $b, $c) {
+            return $a + $b + $c;
+        });
+
+        $add6 = $curriedFn(3, 3);
+
+        $this->assertEquals(10, $add6(4));
+    }
+
     public function testCreateCurriedFunctionWithNoArgumentsThrowsInvalidArgumentException()
     {
         $phurry = new Phurry;
