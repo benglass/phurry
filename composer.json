@@ -1,0 +1,13 @@
+{
+    "name": "benglass/phurry",
+    "description": "Phunctional tools for PHP",
+    "authors": [
+        {
+            "name": "Ben Glassman",
+            "email": "ben@vtdesignworks.com"
+        }
+    ],
+    "autoload":     {
+        "psr-0": { "Phurry": "" }
+    }
+}
