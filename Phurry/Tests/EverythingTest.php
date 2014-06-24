@@ -51,6 +51,15 @@ class EverythingTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(10, $add6(4));
     }
 
+    public function testCanCallCurriedFunctionWithOptionalParameters()
+    {
+        $curriedFn = $this->phurry->curry(function($a, $b, $c = 'c') {
+            return $a . $b . $c;
+        });
+
+        $this->assertEquals('abc', $curriedFn('a', 'b'));
+    }
+
     public function testCreateCurriedFunctionWithNoArgumentsThrowsInvalidArgumentException()
     {
         $this->setExpectedException('InvalidArgumentException');
