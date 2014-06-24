@@ -4,6 +4,17 @@ namespace Phurry;
 
 class Phurry
 {
+    protected static $placeholder;
+
+    public static function placeholder()
+    {
+        if (! static::$placeholder) {
+            static::$placeholder = new \StdClass();
+        }
+
+        return static::$placeholder;
+    }
+
     public function fnArity(callable $fn) {
         $refl = new \ReflectionFunction($fn);
         return $refl->getNumberOfParameters();
@@ -24,12 +35,34 @@ class Phurry
             $numParams = $phurry->fnArity($fn);
             $numRequiredParams = $phurry->fnArityRequired($fn);
             $newArgs = func_get_args();
+            $providedArgs = array_merge($args, $newArgs);
+            $numProvidedArgs = count($providedArgs);
+            $placeholder = call_user_func(array($phurry, 'placeholder'));
+            $placeholderPositions = array();
+            foreach ($providedArgs as $position => $value) {
+                if ($value === $placeholder) {
+                    $placeholderPositions[] = $position;
+                }
+            }
+            $numPlaceholders = count($placeholderPositions);
+            $numFinalArgs = $numProvidedArgs - $numPlaceholders;
 
-            if (count($newArgs) + count($args) > $numParams) {
+            $finalArgs = array();
+            foreach ($args as $position => $value) {
+                // If its not a placeholder, copy it to the final args
+                if ($value !== $placeholder) {
+                    $finalArgs[$position] = $value;
+                    continue;
+                }
+
+                // If its a placeholder
+            }
+
+            if ($numProvidedArgs > $numParams) {
                 throw new \InvalidArgumentException('Dont overcook your curry! Provided more arguments than can be accepted.');
             }
 
-            if (count($newArgs) + count($args) === $numRequiredParams) {
+            if ($numFinalArgs === $numRequiredParams) {
                 return call_user_func_array($fn, array_merge($args, $newArgs));
             }
 
