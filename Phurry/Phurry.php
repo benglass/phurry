@@ -4,14 +4,20 @@ namespace Phurry;
 
 class Phurry
 {
-
     public function fnArity(callable $fn) {
+        $refl = new \ReflectionFunction($fn);
+        return $refl->getNumberOfParameters();
+    }
+
+    public function fnArityRequired(callable $fn) {
         $refl = new \ReflectionFunction($fn);
         return $refl->getNumberOfRequiredParameters();
     }
 
     public function curry(callable $fn, $args = array()) {
-        if ($this->fnArity($fn) === 0) {
+        $numParameters = $this->fnArity($fn);
+        $numRequiredParameters = $this->fnArityRequired($fn);
+        if ($numParameters === 0) {
             throw new \InvalidArgumentException('Looks like you forgot some ingredients! Cant curry a function with no arguments.');
         }
         $phurry = $this;
